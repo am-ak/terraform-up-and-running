@@ -13,12 +13,11 @@ resource "aws_security_group" "instance" {
 }
 
 resource "aws_launch_template" "example" {
-  name                 = "foo"
-  image_id             = "ami-0989fb15ce71ba39e"
-  instance_type        = "t3.micro"
-  security_group_names = [aws_security_group.instance.name]
-  #  vpc_security_group_ids = [aws_security_group.instance.id]
-  user_data = filebase64("${path.module}/example.sh")
+  name                   = "foo"
+  image_id               = "ami-0989fb15ce71ba39e"
+  instance_type          = "t3.micro"
+  vpc_security_group_ids = [aws_security_group.instance.id]
+  user_data              = filebase64("${path.module}/run-webserver.sh")
   # Required when using a launch configuration with an auto scaling group.
   lifecycle {
     create_before_destroy = true
