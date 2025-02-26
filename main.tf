@@ -1,12 +1,6 @@
 terraform {
   backend "s3" {
-    # Replace this with your bucket name!
-    bucket = "terraform-state-74806d4c-0b09-f3b3-628c-fd04c267d16f"
     key    = "global/s3/terraform.tfstate"
-    region = "eu-north-1"
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "terraform-up-and-running-locks"
-    encrypt        = true
   }
 }
 
@@ -141,7 +135,7 @@ resource "aws_s3_bucket" "terraform_state" {
   bucket = "terraform-state-${random_uuid.s3.id}"
   # Prevent accidental deletion of this S3 bucket
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
