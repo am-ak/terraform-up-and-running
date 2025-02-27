@@ -1,5 +1,5 @@
 # backend.hcl
-bucket = "terraform-state-1df2c163-ec24-23b9-7655-6c926c457e2c"
+bucket = "terraform-state-e48fec89-8981-bad6-0ce9-1de8a7f0260e"
 region = "eu-north-1"
 dynamodb_table = "terraform-up-and-running-locks"
 encrypt = true
