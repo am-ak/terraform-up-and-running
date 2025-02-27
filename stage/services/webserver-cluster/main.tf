@@ -37,11 +37,16 @@ resource "aws_launch_template" "example" {
   image_id               = "ami-0989fb15ce71ba39e"
   instance_type          = "t3.micro"
   vpc_security_group_ids = [aws_security_group.instance.id]
-  user_data              = filebase64("${path.module}/run-webserver.sh")
-  # Required when using a launch configuration with an auto scaling group.
-  lifecycle {
-    create_before_destroy = true
-  }
+  # user_data              = filebase64("${path.module}/run-webserver.sh")
+  user_data = base64encode(templatefile("run-webserver.sh", {
+    server_port = var.server_port
+    db_address  = data.terraform_remote_state.db.outputs.address
+    db_port     = data.terraform_remote_state.db.outputs.port
+  }))
+  # # Required when using a launch configuration with an auto scaling group.
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }
 
 resource "aws_autoscaling_group" "example" {
