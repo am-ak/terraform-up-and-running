@@ -4,11 +4,11 @@ resource "aws_security_group" "instance" {
 
 resource "aws_security_group_rule" "allow_8080_inbound" {
   security_group_id = aws_security_group.instance.id
-  type = "ingress"
-  from_port   = var.server_port
-  to_port     = var.server_port
-  protocol    = local.tcp_protocol
-  cidr_blocks = local.all_ips
+  type              = "ingress"
+  from_port         = var.server_port
+  to_port           = var.server_port
+  protocol          = local.tcp_protocol
+  cidr_blocks       = local.all_ips
 }
 
 resource "aws_security_group" "alb" {
@@ -59,6 +59,14 @@ resource "aws_autoscaling_group" "example" {
     key                 = "Name"
     value               = "${var.cluster_name}-asg"
     propagate_at_launch = true
+  }
+  dynamic "tag" {
+    for_each = var.custom_tags
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
   }
 }
 
